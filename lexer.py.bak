@@ -158,10 +158,10 @@ class Lexer:
                 continue
 
             if char in ['+', '-', '*', '/', '!', '<', '>', '=', ':', ';', ',', '(', ')', '%', '$']:
-                
-                
-                
-                
+                # Note: ! is unary NOT, but also Real type. 
+                # Wait, ! is Real type in declarations. ! is NOT in expressions.
+                # Context matters? No, lexer just emits token.
+                # But wait, ! is a single char token.
                 self.tokens.append(Token('CHAR', char, self.line, self.column))
                 self.pos += 1
                 self.column += 1

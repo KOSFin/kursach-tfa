@@ -87,9 +87,9 @@ class Parser:
 
     def parse(self):
         statements = []
-        
+        # print(f"DEBUG: Starting parse loop. Token: {self.current_token}")
         while self.current_token.type != 'EOF' and (self.current_token.type != 'KEYWORD' or self.current_token.value != 'end'):
-            
+            # Skip separators
             while self.current_token.type == 'CHAR' and self.current_token.value == ':':
                 self.eat('CHAR', ':')
             while self.current_token.type == 'NEWLINE':
@@ -98,11 +98,11 @@ class Parser:
             if self.current_token.type == 'EOF' or (self.current_token.type == 'KEYWORD' and self.current_token.value == 'end'):
                 break
 
-            
-            
-            
-            
-            
+            # print(f"DEBUG: Parsing statement. Token: {self.current_token}")
+            # Declaration starts with ID list then :
+            # Statement starts with ID (assign), begin, if, for, while, readln, writeln
+            # Ambiguity: ID could be start of Assign or Decl.
+            # Lookahead needed.
             
             if self.current_token.type == 'ID':
                 idx = self.pos
@@ -126,22 +126,22 @@ class Parser:
             else:
                 statements.append(self.statement())
             
-            
+            # Expect separator or end
             if self.current_token.type == 'CHAR' and self.current_token.value == ':':
                 self.eat('CHAR', ':')
             elif self.current_token.type == 'NEWLINE':
                 self.eat('NEWLINE')
             elif self.current_token.type == 'KEYWORD' and self.current_token.value == 'end':
-                pass 
+                pass # Loop will handle
             elif self.current_token.type == 'EOF':
                 pass
             else:
-                
-                
-                
+                # Maybe inside a block, ; is separator?
+                # No, program structure uses : or newline.
+                # But Compound uses ;
                 pass
 
-        
+        # print(f"DEBUG: Before eating end. Token: {self.current_token}")
         self.eat('KEYWORD', 'end')
         return Program(statements)
 
@@ -222,14 +222,14 @@ class Parser:
             
         then_stmt = self.statement()
         
-        
+        # Lookahead for else, skipping newlines
         idx = self.pos
         while idx < len(self.tokens) and self.tokens[idx].type == 'NEWLINE':
             idx += 1
         
         else_stmt = None
         if idx < len(self.tokens) and self.tokens[idx].type == 'KEYWORD' and self.tokens[idx].value == 'else':
-            
+            # Consume newlines
             while self.current_token.type == 'NEWLINE':
                 self.eat('NEWLINE')
             self.eat('KEYWORD', 'else')
@@ -243,7 +243,7 @@ class Parser:
 
     def for_statement(self):
         self.eat('KEYWORD', 'for')
-        
+        # Assign
         name = self.current_token.value
         self.eat('ID')
         self.eat('ASSIGN')
@@ -345,7 +345,7 @@ class Parser:
             return Num(token)
         elif token.type == 'KEYWORD' and token.value in ['true', 'false']:
             self.eat('KEYWORD')
-            return Num(token) 
+            return Num(token) # Treat bool as num/const
         elif token.type == 'ID':
             self.eat('ID')
             return Var(token)

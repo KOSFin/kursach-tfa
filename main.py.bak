@@ -17,10 +17,10 @@ def main():
         return
 
     lexer = Lexer(text)
+    # tokens = lexer.tokenize()
+    # for t in tokens: print(t)
     
-    
-    
-    
+    # Re-init lexer for parser (tokenize consumes)
     lexer = Lexer(text)
     tokens = lexer.tokenize()
     

@@ -39,9 +39,9 @@ class Interpreter(NodeVisitor):
         expected_type = self.TYPES[var_name]
         
         if expected_type == int:
-            if isinstance(val, bool): pass 
+            if isinstance(val, bool): pass # Bool is int subclass
             elif not isinstance(val, int):
-                
+                # Try casting if float is integer
                 if isinstance(val, float) and val.is_integer():
                     val = int(val)
                 else:
@@ -120,7 +120,7 @@ class Interpreter(NodeVisitor):
 
     def visit_For(self, node):
         self.visit(node.assign)
-        
+        # Loop variable
         var_name = node.assign.name
         
         while True:
@@ -128,8 +128,8 @@ class Interpreter(NodeVisitor):
             to_val = self.visit(node.to_expr)
             step_val = self.visit(node.step_expr) if node.step_expr else 1
             
-            
-            
+            # Check condition (assuming loop continues while var <= to if step > 0, etc)
+            # Standard BASIC/Pascal for loop behavior
             if step_val >= 0:
                 if current_val > to_val: break
             else:
@@ -137,7 +137,7 @@ class Interpreter(NodeVisitor):
             
             self.visit(node.body)
             
-            
+            # Increment
             self.GLOBAL_SCOPE[var_name] = current_val + step_val
 
     def visit_Read(self, node):
@@ -145,7 +145,7 @@ class Interpreter(NodeVisitor):
             if name not in self.GLOBAL_SCOPE:
                 raise Exception(f"Variable {name} not declared")
             val_str = input(f"Enter value for {name}: ")
-            
+            # Try to parse input
             try:
                 if self.TYPES[name] == int:
                     val = int(val_str)

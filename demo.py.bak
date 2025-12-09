@@ -18,23 +18,23 @@ def run_test(filename):
     print("-------------------")
 
     try:
-        
+        # Lexer
         lexer = Lexer(text)
         tokens = lexer.tokenize()
         print("Tokens:", tokens) 
 
-        
-        lexer = Lexer(text) 
+        # Parser
+        lexer = Lexer(text) # Re-init because tokenize consumes
         tokens = lexer.tokenize()
-        
+        # print("Tokens:", tokens) 
         parser = Parser(tokens)
+        # tree = parser.parse() # Interpreter will parse
         
-        
-        
+        # Interpreter
         print("--- Output ---")
         interpreter = Interpreter(parser)
-        
-        
+        # We need to capture stdout to show it nicely, but for now direct print is fine
+        # Note: Interpreter uses print() directly.
         interpreter.interpret()
         print("\n--- Result: SUCCESS ---")
 
