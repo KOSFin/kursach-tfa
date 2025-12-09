@@ -1,0 +1,28 @@
+(* Тест 2: Управляющие конструкции *)
+i : %;
+limit : %;
+flag : $;
+
+limit := 5
+flag := true
+
+(* Условный оператор *)
+if (limit > 0)
+    writeln 111
+else
+    writeln 0
+
+(* Цикл for *)
+for i := 1 to limit step 1
+    writeln i
+next
+
+(* Цикл while *)
+i := 0
+while (i < 3)
+    begin
+        writeln i;
+        i := i + 1
+    end
+
+end

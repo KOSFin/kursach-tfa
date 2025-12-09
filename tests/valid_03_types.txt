@@ -1,0 +1,23 @@
+(* Тест 3: Типы данных и логика *)
+x : !;
+y : !;
+b1, b2 : $;
+
+x := 3.5
+y := 4.5
+
+(* Логические операции *)
+b1 := x < y
+b2 := x > y
+
+if (b1 && !b2)
+    writeln 1
+else
+    writeln 0
+
+if (b1 || b2)
+    writeln 1
+else
+    writeln 0
+
+end

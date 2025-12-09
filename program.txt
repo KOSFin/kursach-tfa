@@ -1,0 +1,14 @@
+a, b : %;
+x : !;
+a := 5
+b := 10
+x := 3.14
+if (a < b)
+    writeln a
+else
+    writeln b
+
+for a := 1 to 5 step 1
+    writeln a
+next
+end
